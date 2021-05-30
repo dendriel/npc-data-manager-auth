@@ -1,0 +1,37 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group 'com.rozsa'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.2.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.2.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.3'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
+    runtimeOnly 'mysql:mysql-connector-java:8.0.18'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+group = 'com.rozsa'
+version = '1.0-SNAPSHOT'
+description = 'npc-data-manager-auth'
+java.sourceCompatibility = JavaVersion.VERSION_11
