@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
 
-    @GetMapping("/validateToken")
+    @GetMapping("/validate")
     public ResponseEntity<?> isTokenValid() {
         return ResponseEntity.status(HttpStatus.OK).body("{ \"autheticated\": true }");
     }

@@ -6,6 +6,8 @@ import com.rozsa.dto.UserDto;
 import com.rozsa.repository.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,15 +37,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto get(@PathVariable Long id) {
+    public ResponseEntity<UserDto> get(@PathVariable Long id) {
         User user = userBusiness.get(id);
-        return userDtoMapper.fromUser(user);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        UserDto userDto = userDtoMapper.fromUser(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 
     @GetMapping("/all")
     public List<UserDto> getAll(@Param("start") int start, @Param("limit") int limit) {
         List<User> users = userBusiness.getAll(start, limit);
-
         return userDtoMapper.fromUsers(users);
+    }
+
+    @GetMapping("/count")
+    public long count() {
+        return userBusiness.count();
     }
 }

@@ -32,6 +32,12 @@ public class UserBusinessImpl implements UserBusiness {
         return userRepository.findByLogin(login);
     }
 
+    @Override
+    public long count() {
+        return userRepository.count();
+    }
+
+    @Override
     public List<User> getAll(int start, int limit) {
         Pageable page = PageRequest.of(start, limit, Sort.by("id"));
         Page<Object[]> users = userRepository.find(page);
@@ -48,9 +54,10 @@ public class UserBusinessImpl implements UserBusiness {
 
     private User fromPageData(Object[] data) {
         User user = new User();
-        user.setEmail((String)data[0]);
-        user.setLogin((String)data[1]);
-        user.setName((String)data[2]);
+        user.setId((Long)data[0]);
+        user.setEmail((String)data[1]);
+        user.setLogin((String)data[2]);
+        user.setName((String)data[3]);
         user.setActive(true);
 
         return user;
@@ -80,11 +87,17 @@ public class UserBusinessImpl implements UserBusiness {
 
     @Override
     public void update(User user) {
-        assertAllFieldsFilled(user);
+        if (user.getId() == null) {
+            throw new ResourceNotFoundException();
+        }
 
         Optional<User> optUser = userRepository.findById(user.getId());
         if (optUser.isEmpty()) {
-            throw new ResourceNotFoundException("User doesn't exist!");
+            throw new ResourceNotFoundException();
+        }
+
+        if (ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getPassword())) {
+            throw new InvalidArgsException("Some user data is missing!");
         }
 
         User sourceUser = optUser.get();
@@ -123,12 +136,10 @@ public class UserBusinessImpl implements UserBusiness {
     }
 
     private void assertAllFieldsFilled(User user) {
-        if (user.getId() == null ||
-            ObjectUtils.isEmpty(user.getName()) ||
+        if (ObjectUtils.isEmpty(user.getName()) ||
             ObjectUtils.isEmpty(user.getLogin()) ||
             ObjectUtils.isEmpty(user.getPassword()) ||
-            ObjectUtils.isEmpty(user.getEmail()) ||
-            user.getActive() == null
+            ObjectUtils.isEmpty(user.getEmail())
         ) {
             throw new InvalidArgsException("Some user data is missing!");
         }

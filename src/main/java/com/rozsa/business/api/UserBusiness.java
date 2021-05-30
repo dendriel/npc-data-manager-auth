@@ -17,4 +17,6 @@ public interface UserBusiness {
     User get(Long id);
 
     List<User> getAll(int start, int limit);
+
+    long count();
 }

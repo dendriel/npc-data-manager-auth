@@ -16,9 +16,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    @Query(value = "SELECT u.email, u.login, u.name, u.active FROM User u WHERE u.active=true AND u.id=?1 ORDER BY u.id")
+    @Query(value = "SELECT u.id, u.email, u.login, u.name, u.active FROM User u WHERE u.active=true AND u.id=?1 ORDER BY u.id")
     Object[] find(Long id);
 
-    @Query(value = "SELECT u.email, u.login, u.name, u.active FROM User u WHERE u.active=true ORDER BY u.id")
+    @Query(value = "SELECT u.id, u.email, u.login, u.name, u.active FROM User u WHERE u.active=true ORDER BY u.id")
     Page<Object[]> find(Pageable pageable);
 }
