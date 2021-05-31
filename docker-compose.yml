@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+  npc-data-manager-auth:
+    image: dendriel/npc-data-manager-auth:latest
+    command: "java -jar /app/npc-data-manager-auth.jar"
+    ports:
+      - 8080:8080
+    working_dir: /app
+    environment:
+      - MYSQL_DB=the_quest
+      - MYSQL_HOST=192.168.15.9
+      - MYSQL_PORT=3306
+      - MYSQL_USER=docker
+      - MYSQL_PASS=pass
