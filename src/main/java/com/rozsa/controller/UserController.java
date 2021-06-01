@@ -19,6 +19,7 @@ public class UserController {
     private final UserBusiness userBusiness;
     private final UserDtoMapper userDtoMapper;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void create(@RequestBody UserDto userDto) {
         User user = userDtoMapper.toUser(userDto);

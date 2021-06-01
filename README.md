@@ -40,7 +40,7 @@ The user CRUD provides a way to manage users. The following APIs are available:
     - Request: POST ``http://localhost``
     - Payload (body): ``{"name": "Dendriel Rozsa", "login": "dendriel", "password": "dendriel-secret", "email": "dendriel@hotmail.com"}``
     - Responses:
-        - Success: HTTP 200
+        - Success: HTTP 201
         - Failure: HTTP 400 - if any parameter is empty or missing: ``{"message": "Some user data is missing!"}``
         - Failure: HTTP 400 - if duplicated login: ``{"message: "User login already in use!"}``
         - Failure: HTTP 400 - if duplicated email: ``{"message: "User email already in use!"}``
