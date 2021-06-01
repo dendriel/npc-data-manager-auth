@@ -14,14 +14,14 @@ public class HealthcheckFilter extends OncePerRequestFilter {
     private static final String healthCheckPath = "/health";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
 
         if (req.getRequestURI().equals(healthCheckPath)) {
-            resp.setStatus(HttpServletResponse.SC_OK);
+            res.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
-        filterChain.doFilter(req, resp);
+        chain.doFilter(req, res);
     }
 }

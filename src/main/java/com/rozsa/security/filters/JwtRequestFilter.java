@@ -27,7 +27,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
 
         final String authHeader = req.getHeader("Authorization");
@@ -39,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username == null || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(req, resp);
+            chain.doFilter(req, res);
             return;
         }
 
@@ -58,6 +58,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        filterChain.doFilter(req, resp);
+        chain.doFilter(req, res);
     }
 }
