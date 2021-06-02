@@ -50,7 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), new ArrayList<>());
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), "", new ArrayList<>());
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
 

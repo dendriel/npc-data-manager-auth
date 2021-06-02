@@ -28,6 +28,9 @@ The token can be validated by calling the API:
         - ``Authorization: Bearer <token>``
     - Responses:
         - Success: HTTP 200 - JSON response content: ```{"authenticated": true}```
+          - Headers
+            - ``x-ndm-username: <username>``
+            - ``x-ndm-authorities: [authorities]``
         - Failure: HTTP 401
 
 The validation API provides a mean to other services verify if user requests are authenticated.
@@ -66,6 +69,14 @@ The user CRUD provides a way to manage users. The following APIs are available:
     - Request: GET ``http://localhost/count``
     - Success: HTTP 200 - Raw response content: \<number of users\>. E.g.: ``123``
 
+## Health Check
+
+Health check endpoint is "/health":
+
+- Request: GET ``http://localhost/health``
+    - Success: HTTP 200
+    - Failure: anything other than HTTP 200.
+
 
 ## Dockerfile
 
@@ -100,4 +111,5 @@ Docker compose allows to pre-set the container startup. Run with:
 
 - Allow to configure token expiration time;
 - Allow to refresh token expiration time;
-- Create a repository impl for user.
+- Create a repository impl for user;
+- Add infra for handling authorities.

@@ -43,9 +43,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
         http.addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(healthcheckFilter, ExceptionHandlerFilter.class);
-        http.addFilterBefore(jwtRequestFilter, HealthcheckFilter.class);
-        http.addFilterBefore(preFlightFilter, JwtRequestFilter.class);
+        http.addFilterBefore(preFlightFilter, ExceptionHandlerFilter.class);
+        http.addFilterBefore(jwtRequestFilter, PreFlightFilter.class);
+        http.addFilterBefore(healthcheckFilter, JwtRequestFilter.class);
     }
 
     @Bean
