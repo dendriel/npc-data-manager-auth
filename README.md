@@ -27,7 +27,7 @@ The token can be validated by calling the API:
     - Headers
         - ``Authorization: Bearer <token>``
     - Responses:
-        - Success: HTTP 200 - JSON response content: ```{"authenticated": true}```
+        - Success: HTTP 200 - JSON response content: ```{"authenticated": true, "username": <username>, "authorities": [authorities]}```
           - Headers
             - ``x-ndm-username: <username>``
             - ``x-ndm-authorities: [authorities]``
