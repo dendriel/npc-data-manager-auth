@@ -5,6 +5,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@PropertySource("classpath:token.properties")
 @Slf4j
 @Service
 public class JwtUtil {
+    @Value("${expiration.time}")
+    private long tokenExpirationInMinutes;
+
     private final String SECRET_KEY = "secret";
 
     public String extractUsername(String token) {
@@ -58,7 +64,7 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * tokenExpirationInMinutes))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

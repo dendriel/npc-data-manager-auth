@@ -4,12 +4,12 @@ import com.rozsa.business.api.AuthenticationBusiness;
 import com.rozsa.dto.AuthenticationRequestDto;
 import com.rozsa.dto.AuthenticationResponseDto;
 import com.rozsa.dto.ValidateResponseDto;
+import com.rozsa.security.CustomUserDetails;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> isTokenValid(HttpServletResponse res) {
-        UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CustomUserDetails details = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         res.setHeader("x-ndm-username", details.getUsername());
 
         List<String> authorities = new ArrayList<>();
@@ -48,6 +48,7 @@ public class AuthenticationController {
         ValidateResponseDto response = new ValidateResponseDto();
         response.setAuthenticated(true);
         response.setUsername(details.getUsername());
+        response.setUserId(details.getUser().getId());
         response.setAuthorities(authorities);
 
         return ResponseEntity.ok(response);

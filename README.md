@@ -16,7 +16,7 @@ Authentication is made by calling the following API:
       - Failure: HTTP 401
 
 After getting a valid token, it can be set in the Authorization header to allow the client
-to make authenticated calls. Tokens last 15 minutes. The header must be set as follows:
+to make authenticated calls. Tokens last 60 minutes. The header must be set as follows:
 
 - ``Authorization: Bearer <token>``
 
@@ -27,7 +27,7 @@ The token can be validated by calling the API:
     - Headers
         - ``Authorization: Bearer <token>``
     - Responses:
-        - Success: HTTP 200 - JSON response content: ```{"authenticated": true, "username": <username>, "authorities": [authorities]}```
+        - Success: HTTP 200 - JSON response content: ```{"authenticated": true, "username": <username>, "userId": <long>, "authorities": [authorities]}```
           - Headers
             - ``x-ndm-username: <username>``
             - ``x-ndm-authorities: [authorities]``
@@ -109,7 +109,6 @@ Docker compose allows to pre-set the container startup. Run with:
 
 ## TODO
 
-- Allow to configure token expiration time;
 - Allow to refresh token expiration time;
 - Create a repository impl for user;
 - Add infra for handling authorities.

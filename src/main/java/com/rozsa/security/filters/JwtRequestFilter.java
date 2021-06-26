@@ -2,6 +2,7 @@ package com.rozsa.security.filters;
 
 import com.rozsa.business.api.UserBusiness;
 import com.rozsa.repository.model.User;
+import com.rozsa.security.CustomUserDetails;
 import com.rozsa.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), "", new ArrayList<>());
+        UserDetails userDetails = new CustomUserDetails(user, new ArrayList<>());
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
 
