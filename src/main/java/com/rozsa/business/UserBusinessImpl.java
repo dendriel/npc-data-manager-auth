@@ -118,6 +118,7 @@ public class UserBusinessImpl implements UserBusiness {
         user.setPassword(pwdHash);
 
         user.setActive(true);
+        user.setService(false);
         userRepository.save(user);
 
         log.info("User created! " + user);

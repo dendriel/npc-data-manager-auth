@@ -1,11 +1,13 @@
 package com.rozsa.repository.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@ToString
 @Data
 @Entity
 public class User {
@@ -33,23 +35,23 @@ public class User {
     @NotNull
     private Boolean active;
 
+    @Column(columnDefinition = "boolean default false")
+    @NotNull
+    private Boolean service;
+
     public boolean isActive() {
-        return active != null ? active : false;
+        return active;
+    }
+
+    public boolean isService() {
+        return service;
+    }
+
+    public boolean isPlainUser() {
+        return !service;
     }
 
     public boolean isInactive() {
         return !isActive();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='####" +
-                ", email='" + email + '\'' +
-                ", active='" + active + '\'' +
-                '}';
     }
 }

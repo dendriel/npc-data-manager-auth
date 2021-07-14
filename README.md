@@ -35,6 +35,7 @@ The token can be validated by calling the API:
 
 The validation API provides a mean to other services verify if user requests are authenticated.
 
+
 ## User CRUD
 
 The user CRUD provides a way to manage users. The following APIs are available:
@@ -77,6 +78,14 @@ Health check endpoint is "/health":
     - Success: HTTP 200
     - Failure: anything other than HTTP 200.
 
+
+## Service Users
+
+Service users are accounts that can be used by services to make authenticated requests to other services. To create a
+service user, use the user `create user` to add a new user, then manually set the "service" flag to true in the database
+for the new user.
+
+Service users authentication tokens don't expire. So it's necessary to generate it only once via `Authenticate` API.
 
 ## Dockerfile
 
