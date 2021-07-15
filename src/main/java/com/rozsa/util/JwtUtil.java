@@ -22,13 +22,16 @@ public class JwtUtil {
     @Value("${expiration.time}")
     private long tokenExpirationInMinutes;
 
+    @Value("${service.expiration.time}")
+    private long serviceTokenExpirationInMinutes;
+
     private final String SECRET_KEY = "secret";
 
     public String extractUsername(String token) {
         try {
             return extractClaim(token, Claims::getSubject);
         } catch (Exception e) {
-            log.debug("Failed to extract token from string \"{}\"", token);
+            log.info("Failed to extract token from string \"{}\"", token);
         }
 
         return null;
@@ -38,7 +41,7 @@ public class JwtUtil {
         try {
             return extractClaim(token, Claims::getExpiration);
         } catch (Exception e) {
-            log.debug("Failed to extract claim from string \"{}\"", token);
+            log.info("Failed to extract claim from string \"{}\"", token);
         }
 
         return null;
@@ -60,15 +63,15 @@ public class JwtUtil {
         return !isTokenExpired(token);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, boolean isService) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        final long expirationTime = isService ? serviceTokenExpirationInMinutes : tokenExpirationInMinutes;
+        return createToken(claims, userDetails.getUsername(), expirationTime);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
-
+    private String createToken(Map<String, Object> claims, String subject, long expirationTime) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * tokenExpirationInMinutes))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expirationTime))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
@@ -77,10 +80,6 @@ public class JwtUtil {
 
         if (!username.equals(user.getLogin())) {
             return false;
-        }
-
-        if (user.isService()) {
-            return true;
         }
 
         return isTokenNotExpired(token);

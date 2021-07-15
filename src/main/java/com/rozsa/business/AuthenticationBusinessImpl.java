@@ -33,6 +33,6 @@ public class AuthenticationBusinessImpl implements AuthenticationBusiness {
         }
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), new ArrayList<>());
-        return jwtTokenUtil.generateToken(userDetails);
+        return jwtTokenUtil.generateToken(userDetails, user.isService());
     }
 }

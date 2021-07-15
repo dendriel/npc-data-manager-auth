@@ -85,7 +85,8 @@ Service users are accounts that can be used by services to make authenticated re
 service user, use the user `create user` to add a new user, then manually set the "service" flag to true in the database
 for the new user.
 
-Service users authentication tokens don't expire. So it's necessary to generate it only once via `Authenticate` API.
+Service users authentication tokens have an expiration time of 30 days. This forces a token rotation, thus it's necessary
+to regenerate the token each 30 days via `Authenticate` API.
 
 ## Dockerfile
 
