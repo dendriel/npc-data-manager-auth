@@ -6,6 +6,9 @@ server:
     include-stacktrace: on_trace_param
     include-exception: true
 
+  servlet:
+    context-path: ${BASE_PATH:}
+
 spring:
   jpa:
     hibernate:
@@ -18,3 +21,10 @@ spring:
 logging:
   level:
     root: info
+
+token:
+  secret: ${TOKEN_SECRET:secret}
+  expiration:
+    time:
+      default: 60
+      service: 43200

@@ -15,17 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@PropertySource("classpath:token.properties")
 @Slf4j
 @Service
 public class JwtUtil {
-    @Value("${expiration.time}")
+    @Value("${token.expiration.time.default}")
     private long tokenExpirationInMinutes;
 
-    @Value("${service.expiration.time}")
+    @Value("${token.expiration.time.service}")
     private long serviceTokenExpirationInMinutes;
 
-    private final String SECRET_KEY = "secret";
+    @Value("${token.secret}")
+    private String secretKey;
 
     public String extractUsername(String token) {
         try {
@@ -52,7 +52,7 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
     private boolean isTokenExpired(String token) {
@@ -72,7 +72,7 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims, String subject, long expirationTime) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expirationTime))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 
     public Boolean validateToken(String token, User user) {
