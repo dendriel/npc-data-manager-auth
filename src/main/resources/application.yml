@@ -14,7 +14,8 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:npc_data}?useTimezone=true&serverTimezone=UTC
+    initialization-mode: always
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:auth_schema}?useTimezone=true&serverTimezone=UTC
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASS:pass}
 

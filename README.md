@@ -79,6 +79,22 @@ Health check endpoint is "/health":
     - Failure: anything other than HTTP 200.
 
 
+## Root User
+
+For testing purposes, the following users are provided by default:
+- Login: root
+- Password: 608ee253affc4e5b9712a1ceccc975bd
+
+
+- Login: service.user01
+- Password: 33e310450cd24597a0a5dbcae37aa67e
+
+
+- Login: service.user02
+- Password: ae589c1c71644fd4b3aa4c88ae9000bb
+
+Password can be changed by using the PATCH API or their creation can be prevented by removing the resources/data.sql file.
+
 ## Service Users
 
 Service users are accounts that can be used by services to make authenticated requests to other services. To create a
