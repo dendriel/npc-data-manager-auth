@@ -15,10 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Slf4j
 @AllArgsConstructor
@@ -31,11 +33,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
 
-        final String authHeader = req.getHeader("Authorization");
+        final String token = getToken(req);
         String username = null;
         String jwt = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
+        if (token != null) {
+            jwt = token;
+            if (jwt.startsWith("Bearer ")) {
+                jwt = jwt.substring(7);
+            }
             username = jwtUtil.extractUsername(jwt);
         }
 
@@ -60,5 +65,30 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         chain.doFilter(req, res);
+    }
+
+
+    public String getToken(HttpServletRequest req) {
+        if (!jwtUtil.isCookieTokenEnabled()) {
+            return req.getHeader("Authorization");
+        }
+
+        final String cookieName = jwtUtil.getCookieTokenName();
+
+        Cookie[] cookies = req.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        Cookie cookie = Arrays.stream(cookies)
+                .filter(c -> c.getName().equals(cookieName))
+                .findFirst()
+                .orElse(null);
+
+        if (cookie == null) {
+            return null;
+        }
+
+        return cookie.getValue();
     }
 }

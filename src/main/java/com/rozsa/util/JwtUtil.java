@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,20 @@ public class JwtUtil {
 
     @Value("${token.secret}")
     private String secretKey;
+
+    @Value("${token.source.cookie}")
+    private boolean cookieTokenEnabled;
+
+    @Value("${token.source.cookie-name}")
+    private String cookieTokenName;
+
+    public boolean isCookieTokenEnabled() {
+        return cookieTokenEnabled;
+    }
+
+    public String getCookieTokenName() {
+        return cookieTokenName;
+    }
 
     public String extractUsername(String token) {
         try {
