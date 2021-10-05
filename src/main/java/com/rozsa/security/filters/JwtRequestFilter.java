@@ -68,7 +68,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(req, res);
     }
 
-
     public String getToken(HttpServletRequest req) {
 
         String token = null;

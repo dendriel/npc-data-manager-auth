@@ -30,6 +30,6 @@ token:
       default: 60
       service: 43200
   source:
-    header: ${HEADER_SOURCE_COOKIE:true}
+    header: ${TOKEN_SOURCE_HEADER:true}
     cookie: ${TOKEN_SOURCE_COOKIE:false}
     cookie-name: ${TOKEN_SOURCE_COOKIE_NAME:AUCC}
