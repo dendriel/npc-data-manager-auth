@@ -6,6 +6,7 @@ import com.rozsa.security.CustomUserDetails;
 import com.rozsa.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -69,9 +70,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
     public String getToken(HttpServletRequest req) {
-        if (!jwtUtil.isCookieTokenEnabled()) {
-            return req.getHeader("Authorization");
+
+        String token = null;
+        if (jwtUtil.isHeaderTokenEnabled()) {
+            token = req.getHeader(HttpHeaders.AUTHORIZATION);
         }
+
+        if (token != null || !jwtUtil.isCookieTokenEnabled()) {
+            log.info("Validate header token");
+            return token;
+        }
+
+        log.info("Validate cookie token");
 
         final String cookieName = jwtUtil.getCookieTokenName();
 

@@ -26,6 +26,9 @@ public class JwtUtil {
     @Value("${token.secret}")
     private String secretKey;
 
+    @Value("${token.source.header}")
+    private boolean headerTokenEnabled;
+
     @Value("${token.source.cookie}")
     private boolean cookieTokenEnabled;
 
@@ -34,6 +37,10 @@ public class JwtUtil {
 
     public boolean isCookieTokenEnabled() {
         return cookieTokenEnabled;
+    }
+
+    public boolean isHeaderTokenEnabled() {
+        return headerTokenEnabled;
     }
 
     public String getCookieTokenName() {
