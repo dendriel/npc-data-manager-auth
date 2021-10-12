@@ -2,7 +2,6 @@ package com.rozsa.security;
 
 import com.rozsa.security.filters.*;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final DbUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
     private final PreFlightFilter preFlightFilter;
-    private final HealthcheckFilter healthcheckFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Override
@@ -35,8 +33,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.
                 csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/authenticate").permitAll()
+                    .antMatchers("/actuator/health").permitAll()
+                    .anyRequest().authenticated()
                 .and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -45,7 +44,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(preFlightFilter, ExceptionHandlerFilter.class);
         http.addFilterBefore(jwtRequestFilter, PreFlightFilter.class);
-        http.addFilterBefore(healthcheckFilter, JwtRequestFilter.class);
     }
 
     @Bean

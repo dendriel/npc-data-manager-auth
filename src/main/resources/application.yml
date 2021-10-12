@@ -33,3 +33,12 @@ token:
     header: ${TOKEN_SOURCE_HEADER:true}
     cookie: ${TOKEN_SOURCE_COOKIE:false}
     cookie-name: ${TOKEN_SOURCE_COOKIE_NAME:AUCC}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      show-details: never
