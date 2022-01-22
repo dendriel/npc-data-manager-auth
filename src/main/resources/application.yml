@@ -24,7 +24,7 @@ logging:
     root: info
 
 token:
-  secret: ${TOKEN_SECRET:secret}
+  secret: ${TOKEN_SECRET:WmZq4t7w!z%C*F-JaNdRgUkXn2r5u8x/}
   expiration:
     time:
       default: 60

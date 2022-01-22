@@ -7,10 +7,10 @@ import com.rozsa.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 
 @AllArgsConstructor
 @Component
@@ -27,12 +27,11 @@ public class AuthenticationBusinessImpl implements AuthenticationBusiness {
         }
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            UserDetails principal = (UserDetails) authentication.getPrincipal();
+            return jwtTokenUtil.generateToken(principal, user.isService());
         } catch (Exception e) {
             return null;
         }
-
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), new ArrayList<>());
-        return jwtTokenUtil.generateToken(userDetails, user.isService());
     }
 }
